@@ -515,7 +515,10 @@ func tsnetConfig(rp runtimeProfile, stderr io.Writer, verbose, logUpload bool, l
 		UserLogf:       prefixedLogf(stderr, rp.State.ID),
 		LogUpload:      logUpload,
 		LogUploadURL:   logUploadURL,
-		Tun:            rp.Tun,
+	}
+	// Leave the interface nil in SOCKS mode so tsnet uses its userspace TUN.
+	if rp.Tun != nil {
+		cfg.Tun = rp.Tun
 	}
 	if verbose {
 		cfg.Logf = prefixedLogf(stderr, rp.State.ID)
